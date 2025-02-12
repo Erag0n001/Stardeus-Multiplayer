@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>88a9ab4b-4025-41cb-b471-b25cd3b63dac</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>SharedProject1</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Misc\Attributes.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)misc\Enums.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)misc\IgnoredPropertyResolver.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Network\ListenerBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Network\PacketUtilities.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Packetdata\ClockSpeed.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Packetdata\KeepAliveData.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Misc\Serializer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)packetdata\MouseData.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)packetdata\SaveFile.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Packetdata\UserData.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Packetdata\UserPermission.cs" />
+  </ItemGroup>
+</Project>

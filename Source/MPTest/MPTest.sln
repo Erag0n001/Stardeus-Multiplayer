@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35527.113
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MPTest", "MPTest.csproj", "{E7DC1A13-10E4-49C7-9B2C-60AA26626371}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server", "..\Server\Server.csproj", "{CE4B2A60-953C-4EB8-A246-42C67B2535F9}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Shared", "..\Shared\Shared.shproj", "{88A9AB4B-4025-41CB-B471-B25CD3B63DAC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E7DC1A13-10E4-49C7-9B2C-60AA26626371}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E7DC1A13-10E4-49C7-9B2C-60AA26626371}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E7DC1A13-10E4-49C7-9B2C-60AA26626371}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E7DC1A13-10E4-49C7-9B2C-60AA26626371}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE4B2A60-953C-4EB8-A246-42C67B2535F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE4B2A60-953C-4EB8-A246-42C67B2535F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE4B2A60-953C-4EB8-A246-42C67B2535F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE4B2A60-953C-4EB8-A246-42C67B2535F9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		..\Shared\Shared.projitems*{88a9ab4b-4025-41cb-b471-b25cd3b63dac}*SharedItemsImports = 13
+		..\Shared\Shared.projitems*{ce4b2a60-953c-4eb8-a246-42c67b2535f9}*SharedItemsImports = 5
+		..\Shared\Shared.projitems*{e7dc1a13-10e4-49c7-9b2c-60aa26626371}*SharedItemsImports = 4
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,79 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Sockets;
+using System.Text;
+using System.Threading.Tasks;
+using Server.Core;
+using Server.Misc;
+using Shared.Enums;
+using Shared.Misc;
+using Shared.PacketData;
+namespace Server.Managers
+{
+    public static class BroadcastManager
+    {
+        public static void BroadcastToAllClient(UserClient client, byte[] data, PacketType header, bool excludeSelf = true)
+        {
+            foreach (UserClient cl in MainProgram.Users)
+            {
+                if (client != null && cl == client) continue;
+                cl.listener.EnqueuePackets(Serializer.MakePacketsFromBytes(data, header, false));
+            }
+        }
+        public static void BroadcastToAllClient(UserClient client, List<byte[]> packets, bool excludeSelf = true)
+        {
+            foreach (UserClient cl in MainProgram.Users)
+            {
+                if (excludeSelf && cl == client) continue;
+                cl.listener.EnqueuePackets(packets);
+            }
+        }
+    }
+    public static class BroadcastHandler 
+    {
+        [PacketHandler(PacketType.BroadCastNewObject)]
+        public static void BroadCastObject(UserClient client, byte[] packet)
+        {
+            BroadcastManager.BroadcastToAllClient(client, packet, PacketType.BroadCastNewObject);
+        }
+
+        [PacketHandler(PacketType.BroadCastNewTile)]
+        public static void BroadCastTile(UserClient client, byte[] packet)
+        {
+            BroadcastManager.BroadcastToAllClient(client, packet, PacketType.BroadCastNewTile);
+        }
+        [PacketHandler(PacketType.BroadCastNewAIGoal)]
+        public static void BroadCastNewAIGoal(UserClient client, byte[] packet)
+        {
+            BroadcastManager.BroadcastToAllClient(client, packet, PacketType.BroadCastNewAIGoal);
+        }
+        [PacketHandler(PacketType.BroadCastNewEntityGoal)]
+        public static void BroadCastNewEntityGoal(UserClient client, byte[] packet)
+        {
+            BroadcastManager.BroadcastToAllClient(client, packet, PacketType.BroadCastNewEntityGoal);
+        }
+        [PacketHandler(PacketType.BroadCastNewEntity)]
+        public static void BroadCastNewEntity(UserClient client, byte[] packet)
+        {
+            BroadcastManager.BroadcastToAllClient(client, packet, PacketType.BroadCastNewEntity);
+        }
+        [PacketHandler(PacketType.BroadCastEntityDelete)]
+        public static void BroadCastEntityDelete(UserClient client, byte[] packet)
+        {
+            BroadcastManager.BroadcastToAllClient(client, packet, PacketType.BroadCastEntityDelete);
+        }
+        [PacketHandler(PacketType.MousePos)]
+        public static void HandleMousePos(UserClient client, byte[] packet)
+        {
+            string s = string.Empty;
+            foreach(byte b in packet)
+                s += b.ToString()+"|";
+            Printer.Warn(s);
+            MouseData data = Serializer.PacketToObject<MouseData>(packet);
+            data.username = client.username;
+            List<byte[]> packets = Serializer.CreatePacketsFromObject(data, PacketType.MousePos);
+            BroadcastManager.BroadcastToAllClient(client, packets);
+        }
+    }
+}

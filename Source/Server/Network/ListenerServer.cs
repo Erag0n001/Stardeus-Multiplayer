@@ -1,0 +1,56 @@
+﻿using System;
+using System.Net.Sockets;
+using System.Text;
+using System.Text.Unicode;
+using Server.Core;
+using Server.Misc;
+using Shared.Enums;
+using Shared.Network;
+
+namespace Server.Network
+{
+    public class ListenerServer : ListenerBase
+    {
+        public static ListenerServer Instance { get; private set; }
+        public UserClient UserClient { get; private set; }
+        public ListenerServer(TcpClient connection) : base(connection)
+        {
+            this.connection = connection;
+            networkStream = connection.GetStream();
+            Instance = this;
+            UserClient = new UserClient();
+            UserClient.client = this.connection;
+            UserClient.listener = this;
+            MainProgram.Users.Add(UserClient);
+        }
+
+        public override void HandlePacket(byte[] packetByte, PacketType packetType)
+        {
+            base.HandlePacket(packetByte, packetType);
+            Printer.Warn($"Packet arrived with header {packetType} from {UserClient.username}");
+            try
+            {
+                if (!MainProgram.Managers.ContainsKey(packetType)) 
+                {
+                    Printer.Error($"{packetType.ToString()} was not present in the manager list");
+                }
+                MainProgram.Managers[packetType].Invoke(null, new object[] { UserClient, packetByte });
+            }
+            catch (Exception ex)
+            {
+                Printer.Error(ex);
+            }
+        }
+
+        public override void HandleError(Exception exception, string method)
+        {
+            Printer.Error($"{method} in the TCP listener had exception:\n{exception}");
+        }
+
+        public override void HandleLogging(object obj)
+        {
+            Printer.Log(obj);
+        }
+
+    }
+}

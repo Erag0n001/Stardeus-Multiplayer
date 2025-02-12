@@ -105,11 +105,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Data\NetworkedBeing.cs" />
     <Compile Include="Data\NetworkedAIGoal.cs" />
-    <Compile Include="Data\NetworkedEntity.cs" />
     <Compile Include="Data\NetworkedObjectWithComp.cs" />
-    <Compile Include="Data\NetworkedTile.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Managers\AIGoalManager.cs" />
     <Compile Include="Managers\EntityManager.cs" />
@@ -125,13 +122,12 @@
     <Compile Include="Managers\MiscManager.cs" />
     <Compile Include="Managers\ObjectManager.cs" />
     <Compile Include="Managers\UserManager.cs" />
-    <Compile Include="Misc\ObjectWithCompsUtils.cs" />
+    <Compile Include="Misc\EntityWithCompsUtils.cs" />
     <Compile Include="Misc\Printer.cs" />
     <Compile Include="Network\ListenerClient.cs" />
     <Compile Include="Network\Network.cs" />
     <Compile Include="Patches\AiAgentCompPatch.cs" />
     <Compile Include="Patches\AiSysPatch.cs" />
-    <Compile Include="Patches\CmdPlaceTilesPatch.cs" />
     <Compile Include="Patches\EntityContainerPatch.cs" />
     <Compile Include="Patches\ClockPatch.cs" />
     <Compile Include="Patches\EntityPatch.cs" />

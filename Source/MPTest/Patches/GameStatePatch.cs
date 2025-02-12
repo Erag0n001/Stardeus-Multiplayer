@@ -23,17 +23,31 @@ namespace Multiplayer.Patches
             public static bool Prefix(GameState __instance, Entity entity) 
             {
                 if (IsServer)
+                {
                     return true;
+                }
                 if (!Main.isHost)
                     return false;
+                return true;
+            }
+            [HarmonyPostfix]
+            public static void Postfix(GameState __instance, Entity entity) 
+            {
+                if (IsServer)
+                {
+                    IsServer = false;
+                    return;
+                }
+                if (!Main.isHost)
+                    return;
                 Type type = entity.GetType();
                 byte[] data = MessagePackSerializer.Serialize(type, entity, CmdSaveGame.MsgPackOptions);
-                NetworkedEntity entityN = new NetworkedEntity();
+                NetworkedObjectWithComp entityN = new NetworkedObjectWithComp();
                 entityN.data = data;
                 entityN.type = type;
-                ObjectWithCompsUtils.GetComps(entity, entityN);
+                entityN.posIdx = entity.PosIdx;
+                Misc.EntityWithCompsUtils.GetComps(entity, entityN);
                 ListenerClient.Instance.EnqueueObject(Shared.Enums.PacketType.BroadCastNewEntity, entityN);
-                return true;
             }
         }
         [HarmonyPatch(typeof(GameState), nameof(GameState.RemoveEntity))]
@@ -49,11 +63,19 @@ namespace Multiplayer.Patches
                     return false;
                 Type type = entity.GetType();
                 byte[] data = MessagePackSerializer.Serialize(type, entity, CmdSaveGame.MsgPackOptions);
-                NetworkedEntity entityN = new NetworkedEntity();
-                entityN.data = data;
-                entityN.type = type;
+                NetworkedObjectWithComp entityN = new NetworkedObjectWithComp();
+                entityN.id = entity.Id;
                 ListenerClient.Instance.EnqueueObject(Shared.Enums.PacketType.BroadCastEntityDelete, entityN);
                 return true;
+            }
+            [HarmonyPostfix]
+            public static void Postfix() 
+            {
+                if (IsServer)
+                {
+                    IsServer = false;
+                    return;
+                }
             }
         }
     }

@@ -13,7 +13,14 @@ namespace Multiplayer.Data
 {
     public class NetworkedObjectWithComp
     {
+        public int? id;
+        public byte[]? data;
+
+        public int? posIdx;
+
         public Type? type;
-        public Dictionary<Type, byte[]> comps = new Dictionary<Type, byte[]>();
+
+        public List<byte[]>? comps = new List<byte[]>();
+        public List<string>? compDefinitions = new List<string>();
     }
 }

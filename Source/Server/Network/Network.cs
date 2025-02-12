@@ -8,7 +8,7 @@ namespace Server.Network
     public static class NetworkHandler
     {
         public static string ip = "0.0.0.0";
-        public static int port = 32003;
+        public static int port = 35000;
         public static TcpListener server;
         public static void CreateConnection(TcpClient client)
         {

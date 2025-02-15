@@ -11,10 +11,11 @@ using MessagePack;
 
 namespace Multiplayer.Data
 {
+    [MessagePackObject]
     public class NetworkedCompConfig
     {
-        public string Component;
-        public List<byte[]> SerializableProperties = new List<byte[]>();
+        [Key(0)] public string Component;
+        [Key(1)] public List<byte[]> SerializableProperties = new List<byte[]>();
 
         public static NetworkedCompConfig GetFromConfig(ComponentConfig config) 
         {

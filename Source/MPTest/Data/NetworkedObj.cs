@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MessagePack;
 
 namespace Multiplayer.Data
 {
+    [MessagePackObject]
     public class NetworkedObj : NetworkedEntityWithComp
     {
-        public float? quality;
-        public NetworkedColor? color;
+        [Key(50)]public float? quality;
+        [Key(51)]public NetworkedColor? color;
     }
 }

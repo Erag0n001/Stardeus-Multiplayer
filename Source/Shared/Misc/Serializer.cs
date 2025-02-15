@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.IO.Compression;
-using System.Reflection;
-using System.Text;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Bson;
+﻿using MessagePack;
 using Shared.Enums;
 
 namespace Shared.Misc
@@ -21,55 +14,51 @@ namespace Shared.Misc
 
         public const int MaxPacketSize = 65500;
 
-        private static JsonSerializerSettings DefaultSettings => new JsonSerializerSettings() 
-        { 
-            TypeNameHandling = TypeNameHandling.None,
-            NullValueHandling = NullValueHandling.Ignore,
-        };
-        private static JsonSerializerSettings ReadableSettings => new JsonSerializerSettings()
-        {
-            Formatting = Formatting.Indented,
-            TypeNameHandling = TypeNameHandling.None
-        };
+        private static MessagePackSerializerOptions DefaultMessagePackOptions =>
+            MessagePackSerializerOptions.Standard
+                .WithResolver(MessagePack.Resolvers.ContractlessStandardResolver.Instance);
+        private static MessagePackSerializerOptions ReadableMessagePackOptions =>
+            MessagePackSerializerOptions.Standard
+                .WithResolver(MessagePack.Resolvers.ContractlessStandardResolver.Instance)
+                .WithCompression(MessagePackCompression.None)
+                .WithAllowAssemblyVersionMismatch(true);
 
         public static string ConvertObjectToJson(object obj)
         {
-            return JsonConvert.SerializeObject(obj, ReadableSettings);
+            byte[] data = MessagePackSerializer.Serialize(obj, ReadableMessagePackOptions);
+            return MessagePackSerializer.ConvertToJson(data, ReadableMessagePackOptions);
         }
+
         public static T ConvertJsonToObject<T>(string json)
         {
-            return JsonConvert.DeserializeObject<T>(json);
+            byte[] data = MessagePackSerializer.ConvertFromJson(json);
+            return MessagePackSerializer.Deserialize<T>(data);
         }
+
         public static byte[] ConvertObjectToBytes(object toConvert)
         {
-            JsonSerializer serializer = JsonSerializer.Create(DefaultSettings);
-            MemoryStream memoryStream = new MemoryStream();
-
-            using (BsonWriter writer = new BsonWriter(memoryStream))
-            {
-                serializer.Serialize(writer, toConvert);
-            }
-
-            return memoryStream.ToArray();
+            return MessagePackSerializer.Serialize(toConvert, DefaultMessagePackOptions);
         }
 
         public static T ConvertBytesToObject<T>(byte[] bytes)
         {
-            JsonSerializer serializer = JsonSerializer.Create(DefaultSettings);
-            MemoryStream memoryStream = new MemoryStream(bytes);
-
-            using BsonReader reader = new BsonReader(memoryStream);
-            return serializer.Deserialize<T>(reader);
+            return MessagePackSerializer.Deserialize<T>(bytes, DefaultMessagePackOptions);
         }
 
         public static List<byte[]> CreatePacketsFromObject(object serializable, PacketType header, bool shouldCompress = true)
         {
-            byte[] objectInByte = ConvertObjectToBytes(serializable);
+            byte[] objectInByte;
+            if (serializable != null)
+                objectInByte = ConvertObjectToBytes(serializable);
+            else
+                objectInByte = new byte[0];
             return MakePacketsFromBytes(objectInByte, header, shouldCompress);
         }
 
         public static List<byte[]> MakePacketsFromBytes(byte[] bytes, PacketType header, bool shouldCompress) 
         {
+            // TODO, find better way to compress packet, current implementation lowers performance
+
             //if (shouldCompress)
             //{
             //    using (MemoryStream memoryStream = new MemoryStream())
@@ -82,12 +71,18 @@ namespace Shared.Misc
             //    }
             //};
             List<byte[]> result = new List<byte[]>();
+            result.Add(CreateLeaderPacket(bytes, header));
+            if(bytes.Length > 0)
+                result.AddRange(SplitBytesIntoPackets(bytes));
+            return result;
+        }
+
+        private static byte[] CreateLeaderPacket(byte[] bytes, PacketType header) 
+        {
             byte[] sizeBuffer = new byte[LeaderPacketSize];
             Array.Copy(BitConverter.GetBytes(bytes.Length), 0, sizeBuffer, 0, SizeIdentifier);
             sizeBuffer[(SizeIdentifier + SizeForHeaderIdentifier) - 1] = (byte)header;
-            result.Add(sizeBuffer);
-            result.AddRange(SplitBytesIntoPackets(bytes));
-            return result;
+            return sizeBuffer;
         }
 
         public static List<byte[]> SplitBytesIntoPackets(byte[] bytes) 
@@ -110,6 +105,8 @@ namespace Shared.Misc
 
         public static T PacketToObject<T>(byte[] bytes)
         {
+            // TODO, find better way to compress packet, current implementation lowers performance
+
             //byte[] decompressedBytes;
             //using (MemoryStream memoryStream = new MemoryStream())
             //{
@@ -140,7 +137,7 @@ namespace Shared.Misc
         {
             if (IsPathValid(path))
             {
-                string json = JsonConvert.SerializeObject(obj);
+                string json = ConvertObjectToJson(obj);
                 File.WriteAllText(path, json);
             }
         }

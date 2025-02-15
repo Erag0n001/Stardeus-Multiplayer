@@ -5,6 +5,7 @@ using System.Text.Unicode;
 using Server.Core;
 using Server.Misc;
 using Shared.Enums;
+using Shared.Misc;
 using Shared.Network;
 
 namespace Server.Network
@@ -27,7 +28,7 @@ namespace Server.Network
         public override void HandlePacket(byte[] packetByte, PacketType packetType)
         {
             base.HandlePacket(packetByte, packetType);
-            Printer.Warn($"Packet arrived with header {packetType} from {UserClient.username}");
+            Printer.Warn($"Packet arrived with header {packetType} from {UserClient.username} and size {packetByte.Length + Serializer.LeaderPacketSize}");
             try
             {
                 if (!MainProgram.Managers.ContainsKey(packetType)) 

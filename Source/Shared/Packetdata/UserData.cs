@@ -1,7 +1,10 @@
+using MessagePack;
+
 namespace Shared.PacketData 
 {
+    [MessagePackObject]
     public class UserData 
     {
-        public string username;
+        [Key(0)] public string username;
     }
 }

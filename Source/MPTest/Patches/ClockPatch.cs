@@ -25,7 +25,7 @@ namespace Multiplayer.Patches
             {
                 if (IsInitialLogin && !Main.isHost)
                 {
-                    ListenerClient.Instance.EnqueueObject(PacketType.ClockSpeedRequest, new KeepAliveData());
+                    ListenerClient.Instance.EnqueueObject(PacketType.ClockSpeedRequest, null);
                     IsInitialLogin = false;
                     return false;
                 }

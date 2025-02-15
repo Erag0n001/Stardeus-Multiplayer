@@ -1,7 +1,10 @@
+using MessagePack;
+
 namespace Shared.PacketData 
 {
+    [MessagePackObject]
     public class UserPermission 
     {
-        public bool isHost;
+        [Key(0)] public bool isHost;
     }
 }

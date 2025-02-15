@@ -1,9 +1,12 @@
+using MessagePack;
+
 namespace Shared.PacketData 
 {
+    [MessagePackObject]
     public class SaveFile 
     {
-        public byte[] data;
-        public byte[] meta;
-        public string? name;
+        [Key(0)] public byte[] data;
+        [Key(1)] public byte[] meta;
+        [Key(2)] public string? name;
     }
 }

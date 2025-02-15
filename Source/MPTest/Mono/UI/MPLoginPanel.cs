@@ -54,7 +54,7 @@ namespace Multiplayer.Mono.UI
                 if (int.TryParse(portInput.text, out int port))
                 {
                     NetworkHandler.CreateConnection(ip, port);
-                    ListenerClient.Instance.EnqueueObject(PacketType.RequestSaveFile, new KeepAliveData());
+                    ListenerClient.Instance.EnqueueObject(PacketType.RequestSaveFile, null);
                 }
                 else
                 {

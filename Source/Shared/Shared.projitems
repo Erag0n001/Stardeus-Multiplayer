@@ -14,7 +14,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Network\ListenerBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Network\PacketUtilities.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Packetdata\ClockSpeed.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Packetdata\KeepAliveData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Misc\Serializer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Packetdata\MouseData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Packetdata\SaveFile.cs" />

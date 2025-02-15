@@ -138,7 +138,7 @@ namespace Shared.Network
                 {
                     Thread.Sleep(1000);
 
-                    List<byte[]> packet = PacketUtility.CreatePacketsFromObject(PacketType.KeepAlive, new KeepAliveData());
+                    List<byte[]> packet = PacketUtility.CreatePacketsFromObject(PacketType.KeepAlive, null);
                     EnqueuePackets(packet);
                 }
             }

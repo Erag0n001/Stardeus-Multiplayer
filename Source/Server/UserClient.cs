@@ -4,7 +4,7 @@ using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
+using MessagePack;
 using Server.Core;
 using Server.Misc;
 using Server.Network;
@@ -12,14 +12,15 @@ using Shared.PacketData;
 
 namespace Server
 {
+    [MessagePackObject]
     public class UserClient
     {
-        public TcpClient client;
-        public ListenerServer listener;
+        [IgnoreMember] public TcpClient client;
+        [IgnoreMember] public ListenerServer listener;
 
-        public string username;
-        public UserPermission permission = new();
-        [JsonIgnore] private bool hasBeenAssigned;
+        [Key(0)] public string username;
+        [Key(1)] public UserPermission permission = new();
+        [IgnoreMember] private bool hasBeenAssigned;
         public void AssignData(UserData data) 
         {
             if (hasBeenAssigned)

@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MessagePack;
 
 namespace Multiplayer.Data
 {
+    [MessagePackObject]
     public class NetworkedAIGoal
     {
-        public int? entityID;
-        public byte[] goal;
+        [Key(0)] public int? entityID;
+        [Key(1)] public byte[] goal;
     }
 }

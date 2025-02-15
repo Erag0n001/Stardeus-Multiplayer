@@ -32,17 +32,8 @@ namespace Server.Managers
     }
     public static class BroadcastHandler 
     {
-        [PacketHandler(PacketType.BroadCastNewObject)]
-        public static void BroadCastObject(UserClient client, byte[] packet)
-        {
-            BroadcastManager.BroadcastToAllClient(client, packet, PacketType.BroadCastNewObject);
-        }
 
-        [PacketHandler(PacketType.BroadCastNewTile)]
-        public static void BroadCastTile(UserClient client, byte[] packet)
-        {
-            BroadcastManager.BroadcastToAllClient(client, packet, PacketType.BroadCastNewTile);
-        }
+
         [PacketHandler(PacketType.BroadCastNewAIGoal)]
         public static void BroadCastNewAIGoal(UserClient client, byte[] packet)
         {
@@ -52,6 +43,13 @@ namespace Server.Managers
         public static void BroadCastNewEntityGoal(UserClient client, byte[] packet)
         {
             BroadcastManager.BroadcastToAllClient(client, packet, PacketType.BroadCastNewEntityGoal);
+        }
+
+        // Entity related
+        [PacketHandler(PacketType.BroadCastNewObj)]
+        public static void BroadCastObject(UserClient client, byte[] packet)
+        {
+            BroadcastManager.BroadcastToAllClient(client, packet, PacketType.BroadCastNewObj);
         }
         [PacketHandler(PacketType.BroadCastNewEntity)]
         public static void BroadCastNewEntity(UserClient client, byte[] packet)
@@ -63,6 +61,8 @@ namespace Server.Managers
         {
             BroadcastManager.BroadcastToAllClient(client, packet, PacketType.BroadCastEntityDelete);
         }
+
+
         [PacketHandler(PacketType.MousePos)]
         public static void HandleMousePos(UserClient client, byte[] packet)
         {

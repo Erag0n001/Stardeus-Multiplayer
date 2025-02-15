@@ -106,7 +106,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Data\NetworkedAIGoal.cs" />
-    <Compile Include="Data\NetworkedObjectWithComp.cs" />
+    <Compile Include="Data\NetworkedColor.cs" />
+    <Compile Include="Data\NetworkedCompConfig.cs" />
+    <Compile Include="Data\NetworkedEntityWithComp.cs" />
+    <Compile Include="Data\NetworkedObj.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Managers\AIGoalManager.cs" />
     <Compile Include="Managers\EntityManager.cs" />
@@ -120,7 +123,6 @@
     <Compile Include="Patches\GameStatePatch.cs" />
     <Compile Include="Patches\MainMenuStartPatch.cs" />
     <Compile Include="Managers\MiscManager.cs" />
-    <Compile Include="Managers\ObjectManager.cs" />
     <Compile Include="Managers\UserManager.cs" />
     <Compile Include="Misc\EntityWithCompsUtils.cs" />
     <Compile Include="Misc\Printer.cs" />
@@ -128,9 +130,9 @@
     <Compile Include="Network\Network.cs" />
     <Compile Include="Patches\AiAgentCompPatch.cs" />
     <Compile Include="Patches\AiSysPatch.cs" />
-    <Compile Include="Patches\EntityContainerPatch.cs" />
     <Compile Include="Patches\ClockPatch.cs" />
     <Compile Include="Patches\EntityPatch.cs" />
+    <Compile Include="Patches\ObjsPatch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

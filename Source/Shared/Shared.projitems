@@ -16,8 +16,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Packetdata\ClockSpeed.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Packetdata\KeepAliveData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Misc\Serializer.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)packetdata\MouseData.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)packetdata\SaveFile.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Packetdata\MouseData.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Packetdata\SaveFile.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Packetdata\UserData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Packetdata\UserPermission.cs" />
   </ItemGroup>

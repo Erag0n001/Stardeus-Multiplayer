@@ -21,7 +21,11 @@ namespace Shared.Misc
 
         public const int MaxPacketSize = 65500;
 
-        private static JsonSerializerSettings DefaultSettings => new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.None };
+        private static JsonSerializerSettings DefaultSettings => new JsonSerializerSettings() 
+        { 
+            TypeNameHandling = TypeNameHandling.None,
+            NullValueHandling = NullValueHandling.Ignore,
+        };
         private static JsonSerializerSettings ReadableSettings => new JsonSerializerSettings()
         {
             Formatting = Formatting.Indented,

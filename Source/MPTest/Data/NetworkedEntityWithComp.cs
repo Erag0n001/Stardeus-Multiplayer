@@ -11,16 +11,17 @@ using UnityEngine;
 
 namespace Multiplayer.Data
 {
-    public class NetworkedObjectWithComp
+    public class NetworkedEntityWithComp
     {
         public int? id;
         public byte[]? data;
 
-        public int? posIdx;
+        public float? x;
+        public float? y;
 
         public Type? type;
 
-        public List<byte[]>? comps = new List<byte[]>();
-        public List<string>? compDefinitions = new List<string>();
+        public List<byte[]>? comps;
+        public List<NetworkedCompConfig>? compConfigs;
     }
 }

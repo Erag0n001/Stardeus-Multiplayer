@@ -8,6 +8,7 @@ using Game.Data;
 using HarmonyLib;
 using MessagePack;
 using Multiplayer.Data;
+using Multiplayer.Managers;
 using Multiplayer.Misc;
 using Multiplayer.Network;
 
@@ -30,26 +31,8 @@ namespace Multiplayer.Patches
                     return false;
                 return true;
             }
-            [HarmonyPostfix]
-            public static void Postfix(GameState __instance, Entity entity) 
-            {
-                if (IsServer)
-                {
-                    IsServer = false;
-                    return;
-                }
-                if (!Main.isHost)
-                    return;
-                Type type = entity.GetType();
-                byte[] data = MessagePackSerializer.Serialize(type, entity, CmdSaveGame.MsgPackOptions);
-                NetworkedObjectWithComp entityN = new NetworkedObjectWithComp();
-                entityN.data = data;
-                entityN.type = type;
-                entityN.posIdx = entity.PosIdx;
-                Misc.EntityWithCompsUtils.GetComps(entity, entityN);
-                ListenerClient.Instance.EnqueueObject(Shared.Enums.PacketType.BroadCastNewEntity, entityN);
-            }
         }
+
         [HarmonyPatch(typeof(GameState), nameof(GameState.RemoveEntity))]
         public static class RemoveEntityPatch
         {
@@ -63,8 +46,9 @@ namespace Multiplayer.Patches
                     return false;
                 Type type = entity.GetType();
                 byte[] data = MessagePackSerializer.Serialize(type, entity, CmdSaveGame.MsgPackOptions);
-                NetworkedObjectWithComp entityN = new NetworkedObjectWithComp();
+                NetworkedEntityWithComp entityN = new NetworkedEntityWithComp();
                 entityN.id = entity.Id;
+                entityN.type = type;
                 ListenerClient.Instance.EnqueueObject(Shared.Enums.PacketType.BroadCastEntityDelete, entityN);
                 return true;
             }

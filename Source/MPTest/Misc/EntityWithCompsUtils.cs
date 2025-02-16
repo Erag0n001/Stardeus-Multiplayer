@@ -29,10 +29,11 @@ namespace Multiplayer.Misc
         {
             GameStatePatch.AddEntityPatch.IsServer = true;
 
+            Printer.Warn(entityN.data);
+            Printer.Warn(entityN.type);
             Entity entity = (Entity)MessagePackSerializer.Deserialize(entityN.type, entityN.data, CmdSaveGame.MsgPackOptions);
             Def def = The.Defs.Get(entity.DefinitionId);
             Vector2 pos = new Vector2((float)entityN.x, (float)entityN.y);
-            Printer.Warn(pos);
             Printer.Warn($"Spawning entity {entity}");
 
             if (entityN.type == typeof(Obj))
@@ -69,17 +70,16 @@ namespace Multiplayer.Misc
         }
         public static void SetComps(Entity entity, NetworkedEntityWithComp objN) 
         {
-            entity.Components = new IComponent[objN.comps.Count];    
+            entity.Components = null;    
             for (int i = 0; i < objN.comps.Count; i++)
             {
                 ComponentConfig config = objN.compConfigs[i].ToConfig();
                 IComponent comp = The.Defs.CreateComponent(config, entity);
-                entity.SetComponent(comp, i, objN.comps.Count);
+                entity.AddComponent(comp);
 
-                if (objN.comps[i] != null) {
-                    ComponentData compData = MessagePackSerializer.Deserialize<ComponentData>(objN.comps[i]);
-                    comp.Load(entity, compData);
-                }
+                ComponentData compData = MessagePackSerializer.Deserialize<ComponentData>(objN.comps[i], CmdSaveGame.MsgPackOptions);
+                comp.Load(entity, compData);
+
                 Printer.Warn(comp);
             }
         }
@@ -90,16 +90,13 @@ namespace Multiplayer.Misc
             networkedObject.compConfigs = new List<NetworkedCompConfig>();
             foreach (IComponent comp in obj.Components)
             {
+                comp.OnSave();
                 ComponentData compData = comp.Data;
+
+                byte[] data = MessagePackSerializer.Serialize(compData, CmdSaveGame.MsgPackOptions);
                 Printer.Warn(comp);
-                if (compData != null)
-                {
-                    comp.OnSave();
-                    byte[] data = MessagePackSerializer.Serialize(compData);
-                    networkedObject.comps.Add(data);
-                }
-                else
-                    networkedObject.comps.Add(null);
+
+                networkedObject.comps.Add(data);
                 networkedObject.compConfigs.Add(NetworkedCompConfig.GetFromConfig(comp.Config));
             }
         }

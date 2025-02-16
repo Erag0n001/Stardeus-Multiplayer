@@ -1,4 +1,7 @@
-﻿using MessagePack;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using MessagePack;
 using Shared.Enums;
 
 namespace Shared.Misc

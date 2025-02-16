@@ -19,26 +19,29 @@ namespace Multiplayer.Managers
     {
         public static void BroadcastEntity(Entity entity)
         {
-            Type type = entity.GetType();
-            byte[] data = MessagePackSerializer.Serialize(type, entity, CmdSaveGame.MsgPackOptions);
+            Task.Run(() =>
+            {
+                Thread.Sleep(2000);
+                Type type = entity.GetType();
+                byte[] data = MessagePackSerializer.Serialize(type, entity, CmdSaveGame.MsgPackOptions);
 
-            NetworkedEntityWithComp entityN =
-                (entity is Obj) ? GetNetworkedObj(entity as Obj) :
-                (entity is Being) ? GetBeing(entity as Being) :
-                new NetworkedEntityWithComp();
+                NetworkedEntityWithComp entityN =
+                    (entity is Obj) ? GetNetworkedObj(entity as Obj) :
+                    (entity is Being) ? GetBeing(entity as Being) :
+                    new NetworkedEntityWithComp();
 
-            entityN.data = data;
-            entityN.type = type;
-            entityN.x = entity.Position.x;
-            entityN.y = entity.Position.y;
-            EntityWithCompsUtils.GetComps(entity, entityN);
-            if (entity is Obj)
-                ListenerClient.Instance.EnqueueObject(PacketType.BroadCastNewObj, entityN);
-            else if (entity is Being)
-                ;//Do nothing for now
-            else
-                ListenerClient.Instance.EnqueueObject(PacketType.BroadCastNewEntity, entityN);
-            Task.Run(() => { Thread.Sleep(2000); Printer.Warn(entity); });
+                entityN.data = data;
+                entityN.type = type;
+                entityN.x = entity.Position.x;
+                entityN.y = entity.Position.y;
+                EntityWithCompsUtils.GetComps(entity, entityN);
+                if (entity is Obj)
+                    ListenerClient.Instance.EnqueueObject(PacketType.BroadCastNewObj, entityN);
+                else if (entity is Being)
+                    ;//Do nothing for now
+                else
+                    ListenerClient.Instance.EnqueueObject(PacketType.BroadCastNewEntity, entityN);
+            });
         }
         private static NetworkedObj GetNetworkedObj(Obj obj) 
         {

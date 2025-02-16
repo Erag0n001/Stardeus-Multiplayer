@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Game.Components;
 using Game.Systems.Items;
 using MessagePack;
+using Multiplayer.Misc;
 using UnityEngine;
 
 namespace Multiplayer.Data
@@ -19,10 +20,11 @@ namespace Multiplayer.Data
         [Key(2)] public float? x;
         [Key(3)] public float? y;
 
-        [Key(4)] private string? typestring { get; set; } //Apparently needed to serialize private fields
+        [Key(4)] public string? typestring;
         [IgnoreMember] public Type type { 
             get 
-            { 
+            {
+                Printer.Warn(typestring);
                 if(typestring != null)
                     return Type.GetType(typestring);
                 else 

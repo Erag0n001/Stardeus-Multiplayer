@@ -8,6 +8,7 @@ using Game.Components;
 using Game.Data;
 using HarmonyLib;
 using MessagePack;
+using Multiplayer.Misc;
 
 namespace Multiplayer.Data
 {
@@ -21,9 +22,12 @@ namespace Multiplayer.Data
         {
             NetworkedCompConfig compConfig = new NetworkedCompConfig();
             compConfig.Component = config.Component;
-            foreach (SerializableProperty property in config.Properties)
+            if (config.Properties != null)
             {
-                compConfig.SerializableProperties.Add(MessagePackSerializer.Serialize(property, CmdSaveGame.MsgPackOptions));
+                foreach (SerializableProperty property in config.Properties)
+                {
+                    compConfig.SerializableProperties.Add(MessagePackSerializer.Serialize(property, CmdSaveGame.MsgPackOptions));
+                }
             }
             return compConfig;
         }
@@ -32,9 +36,12 @@ namespace Multiplayer.Data
         {
             ComponentConfig compConfig = new ComponentConfig();
             compConfig.Component = this.Component;
-            foreach(byte[] value in this.SerializableProperties) 
+            if (this.SerializableProperties.Count > 0)
             {
-                compConfig.Properties.AddItem(MessagePackSerializer.Deserialize<SerializableProperty>(value));
+                foreach (byte[] value in this.SerializableProperties)
+                {
+                    compConfig.Properties.AddItem(MessagePackSerializer.Deserialize<SerializableProperty>(value, CmdSaveGame.MsgPackOptions));
+                }
             }
             return compConfig;
         }

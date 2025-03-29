@@ -1,9 +1,9 @@
 {
-    "Id" : "Eragon.MPTEST",
+    "Id" : "Eragon.Multiplayer",
     "SteamWorkshop" : false,
-    "Name" : "MP test",
+    "Name" : "Multiplayer",
     "Description" : "Example Stardeus mod template with VS Code. Contains official examples of how to mod certain aspects of the game. See more details at the GitHub repo: https://github.com/kodolinija/stardeus-mod-template",
     "ModVersion" : "1.0.0",
     "GameVersion" : "0.12.6",
-    "Dependencies" : [ "Core" ]
+    "Dependencies" : ["Eragon.ModConfig_3435253357"]
 }

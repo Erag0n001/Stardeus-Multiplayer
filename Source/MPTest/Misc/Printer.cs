@@ -17,7 +17,7 @@ namespace Multiplayer.Misc
         public static void Warn(object toLog, Verbose modifier = Verbose.Normal)
         {
             string messageToLog = $"{HandleVerbose(modifier, toLog)}";
-           Debug.LogWarning(messageToLog);
+           D.Warn(messageToLog);
         }
         public static void Error(object toLog, Verbose modifier = Verbose.Normal)
         {

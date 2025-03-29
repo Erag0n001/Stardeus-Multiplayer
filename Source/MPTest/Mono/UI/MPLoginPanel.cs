@@ -27,11 +27,6 @@ namespace Multiplayer.Mono.UI
             if (on)
                 Printer.Warn("Save the login data");
         }
-        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-        private static void Register()
-        {
-            Panels.AddSettingsPanel("menu.multiplayer.login", new PanelDescriptor(typeof(MPLoginPanel), isGlobal: true, -2147483643, "Icons/White/Twitch", skipInGame: true));
-        }
         private void Start()
         {
             UIBuilder.CreateText("UIHeadingWidget", "Multiplayer", base.transform);
@@ -55,6 +50,9 @@ namespace Multiplayer.Mono.UI
                 {
                     NetworkHandler.CreateConnection(ip, port);
                     ListenerClient.Instance.EnqueueObject(PacketType.RequestSaveFile, null);
+                    Main.Configs.previousPort = port;
+                    Main.Configs.previousIP = ip;
+                    
                 }
                 else
                 {

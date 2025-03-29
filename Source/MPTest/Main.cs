@@ -14,6 +14,8 @@ using Multiplayer.Mono.UI;
 using Game;
 using Game.Misc;
 using Shared.Enums;
+using Multiplayer.Config;
+using ModConfig;
 
 namespace Multiplayer
 {
@@ -23,9 +25,11 @@ namespace Multiplayer
         public static Dictionary<PacketType, MethodInfo> Managers = new Dictionary<PacketType, MethodInfo>();
         public static bool isHost = false;
         public static bool isConnected = false;
+        public static ConfigDataMultiplayer Configs;
         [RuntimeInitializeOnLoadMethod]
         static void StaticConstructorOnStartup() 
         {
+            Configs = (ConfigDataMultiplayer)ConfigData.LoadConfig("Eragon.Multiplayer");
             Printer.Warn("Multiplayer Loaded!");
             LoadHarmony();
             CreateUnityDispatcher();

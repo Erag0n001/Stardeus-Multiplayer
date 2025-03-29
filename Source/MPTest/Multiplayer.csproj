@@ -71,6 +71,10 @@
       <HintPath>G:\Steam\steamapps\common\Stardeus\Stardeus_Data\Managed\MessagePack.Annotations.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="ModConfig">
+      <HintPath>..\..\..\Mod Config\Libraries\ModConfig.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="mscorlib">
       <HintPath>G:\Steam\steamapps\common\Stardeus\Stardeus_Data\Managed\mscorlib.dll</HintPath>
       <Private>False</Private>
@@ -101,6 +105,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Config\ConfigDataMultiplayer.cs" />
+    <Compile Include="Config\ModConfigsMultiplayer.cs" />
     <Compile Include="Data\NetworkedAIGoal.cs" />
     <Compile Include="Data\NetworkedColor.cs" />
     <Compile Include="Data\NetworkedCompConfig.cs" />

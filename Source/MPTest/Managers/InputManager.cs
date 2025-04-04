@@ -51,17 +51,17 @@ namespace Multiplayer.Managers
 
         public static void MoveCursorFromUser(MouseData data) 
         {
+            if (!Ready.Game)
+                return;
             if (!mouses.ContainsKey(data.username))
                 CreateMouseGameobject(data);
             Mouse mouse = mouses[data.username];
             mouse.SetLerpData(data);
-            Printer.Error($"{data.x}, {data.y}");
-            Printer.Warn($"{mouse.gameObject.transform.position}");
         }
 
         private static GameObject CreateMouseGameobject(MouseData data) 
         {
-            Printer.Warn($"Created mouse for {data.username}");
+            Printer.Warn($"Creating mouse for {data.username}...");
 
             GameObject gameObject = new GameObject($"Mouse_{data.username}");
             //GameObject instance = UnityEngine.Object.Instantiate(gameObject);
@@ -80,7 +80,7 @@ namespace Multiplayer.Managers
 
             gameObject.transform.position = new Vector3(data.x, data.y, 300);
             gameObject.transform.localScale = Vector3.one;
-            gameObject.layer = 3;
+            gameObject.layer = LayerMask.NameToLayer("ObjectsAbove");
 
             mouses.Add(data.username, mouse);
             return gameObject;

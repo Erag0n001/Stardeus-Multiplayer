@@ -31,7 +31,7 @@ namespace Multiplayer.Patches
                 if (IsFromServer)
                 {
                     IsFromServer = false;
-                    //InputManager.StartBroadcastingMousePos();
+                    InputManager.StartBroadcastingMousePos();
                     return;
                 }
 

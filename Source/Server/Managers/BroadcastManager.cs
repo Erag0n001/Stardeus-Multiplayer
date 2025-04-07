@@ -66,10 +66,6 @@ namespace Server.Managers
         [PacketHandler(PacketType.MousePos)]
         public static void HandleMousePos(UserClient client, byte[] packet)
         {
-            string s = string.Empty;
-            foreach(byte b in packet)
-                s += b.ToString()+"|";
-            Printer.Warn(s);
             MouseData data = Serializer.PacketToObject<MouseData>(packet);
             data.username = client.username;
             List<byte[]> packets = Serializer.CreatePacketsFromObject(data, PacketType.MousePos);

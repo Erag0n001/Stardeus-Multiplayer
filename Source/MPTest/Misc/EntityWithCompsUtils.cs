@@ -27,7 +27,7 @@ namespace Multiplayer.Misc
     {
         public static Entity Initialize(NetworkedEntityWithComp entityN)
         {
-            GameStatePatch.AddEntityPatch.IsServer = true;
+            //GameStatePatch.AddEntityPatch.IsServer = true;
 
             Printer.Warn(entityN.data);
             Printer.Warn(entityN.type);

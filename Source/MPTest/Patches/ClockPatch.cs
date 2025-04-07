@@ -23,6 +23,9 @@ namespace Multiplayer.Patches
             [HarmonyPrefix]
             public static bool Prefix() 
             {
+                if (!Main.isConnected)
+                    return true;
+
                 if (IsInitialLogin && !Main.isHost)
                 {
                     ListenerClient.Instance.EnqueueObject(PacketType.ClockSpeedRequest, null);
@@ -39,6 +42,8 @@ namespace Multiplayer.Patches
             [HarmonyPostfix]
             public static void Postfix(ClockSpeed newSpeed)
             {
+                if (!Main.isConnected)
+                    return;
                 if (IsFromServer)
                 {
                     IsFromServer = false;

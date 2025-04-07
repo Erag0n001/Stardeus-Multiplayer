@@ -22,6 +22,7 @@ namespace Multiplayer.Managers
     public static class AIGoalManager
     {
         static Dictionary<AIAgentComp, uint> currentAgents = new Dictionary<AIAgentComp, uint>();
+        public static FixedList<AIGoal> localGoals = new FixedList<AIGoal>(25);
         public static bool CheckIfGoalHasChanged(AIAgentComp agent) 
         {
             if (!currentAgents.ContainsKey(agent))
@@ -57,7 +58,7 @@ namespace Multiplayer.Managers
         [PacketHandler(PacketType.BroadCastNewEntityGoal)]
         public static void HandleNewEntityGoalFromPacket(byte[] packet)
         {
-            EntityPatch.TrySetGoalPatch.IsFromServer = true;
+            AiAgentCompPatch.IsFromServer = true;
             NetworkedAIGoal goalN = Serializer.PacketToObject<NetworkedAIGoal>(packet);
             AIGoalData goalData = MessagePackSerializer.Deserialize<AIGoalData>(goalN.goal);
             AIGoal goal = AIGoalData.Deserialize(A.S, goalData, false);

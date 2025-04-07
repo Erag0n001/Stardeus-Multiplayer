@@ -28,7 +28,8 @@ namespace Server.Network
         public override void HandlePacket(byte[] packetByte, PacketType packetType)
         {
             base.HandlePacket(packetByte, packetType);
-            Printer.Warn($"{DateTime.UtcNow:HH:mm:ss:} Packet arrived with header {packetType} from {UserClient.username} and size {packetByte.Length + Serializer.LeaderPacketSize}");
+            if(packetType != PacketType.KeepAlive)
+                Printer.Warn($"{DateTime.UtcNow:HH:mm:ss:} Packet arrived with header {packetType} from {UserClient.username} and size {packetByte.Length + Serializer.LeaderPacketSize}");
             try
             {
                 if (!MainProgram.Managers.ContainsKey(packetType)) 

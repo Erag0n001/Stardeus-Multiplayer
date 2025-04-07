@@ -18,6 +18,7 @@ using Shared.Enums;
 using Shared.Misc;
 using Shared.PacketData;
 using UnityEngine;
+using static UnityEngine.UI.Image;
 
 namespace Multiplayer.Managers
 {
@@ -25,6 +26,40 @@ namespace Multiplayer.Managers
     {
         public const float sleepTime = 25;
         private static Dictionary<string, Mouse> mouses = new Dictionary<string, Mouse>();
+        private readonly static Sprite GrayScaleMouse;
+        static InputManager() 
+        {
+            GrayScaleMouse = MakeGrayscaleSprite(Images.CursorSprite("Cursor"));
+        }
+
+        private static Sprite MakeGrayscaleSprite(Sprite original) 
+        {
+            Texture2D grayTex = MakeGrayscaleCopy(original.texture);
+            Rect rect = original.rect;
+            Vector2 pivot = original.pivot / rect.size;
+            float pixelsPerUnit = original.pixelsPerUnit;
+
+            return Sprite.Create(grayTex, rect, pivot, pixelsPerUnit);
+        }
+
+        private static Texture2D MakeGrayscaleCopy(Texture2D original) 
+        {
+            Texture2D copy = new Texture2D(original.width, original.height, original.format, false);
+            Color[] pixels = original.GetPixels();
+
+            for (int i = 0; i < pixels.Length; i++)
+            {
+                Color c = pixels[i];
+                float gray = c.r * 0.3f + c.g * 0.59f + c.b * 0.11f;
+                pixels[i] = new Color(gray, gray, gray, c.a);
+            }
+
+            copy.SetPixels(pixels);
+            copy.Apply();
+
+            return copy;
+        }
+
         public static void StartBroadcastingMousePos() 
         {
             Task.Run(() =>
@@ -67,14 +102,11 @@ namespace Multiplayer.Managers
             //GameObject instance = UnityEngine.Object.Instantiate(gameObject);
 
             SpriteRenderer renderer = gameObject.AddComponent<SpriteRenderer>();
-            renderer.sprite = Images.CursorSprite("Cursor");
+            renderer.sprite = GrayScaleMouse;
+            renderer.color = new Color(1f, 0f, 0f, 1f);
             renderer.sortingOrder = 2;
-            renderer.color = new Color(1, 1, 1, 1);
             renderer.material = new Material(Shader.Find("Sprites/Default"));
             renderer.renderingLayerMask = 1;
-
-            if (renderer.sprite == null)
-                Printer.Warn("Cursor sprite is missing!");
 
             Mouse mouse = gameObject.AddComponent<Mouse>();
 
@@ -86,6 +118,7 @@ namespace Multiplayer.Managers
             return gameObject;
         }
     }
+
     public static class InputHandler 
     {
         [PacketHandler(PacketType.MousePos)]

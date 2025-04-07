@@ -22,24 +22,6 @@ namespace Multiplayer.Mono.GameObjects
             startPos = transform.position;
             finished = true;
             GameObject[] allGameObjects = FindObjectsOfType<GameObject>();
-
-            // Loop through each GameObject and print its position
-            foreach (GameObject go in allGameObjects)
-            {
-                // Check if the GameObject has a Transform (every GameObject should have one by default)
-                if (go.transform != null)
-                {
-                    SpriteRenderer r = go.GetComponent<SpriteRenderer>();
-                    if (r != null)
-                    {
-                        Debug.Log(go.name + " Position: " + go.transform.position);
-                        Debug.Log(go.layer);
-                        Debug.Log(r.sortingOrder);
-                        Debug.Log(r.renderingLayerMask);
-                        Debug.Log(r.sortingLayerName);
-                    }
-                }
-            }
         }
         public void SetLerpData(MouseData data) 
         {

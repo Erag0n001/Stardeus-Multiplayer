@@ -19,6 +19,7 @@ namespace Shared.Network
 
         private readonly BlockingCollection<byte[]> dataQueue = new BlockingCollection<byte[]>();
         private bool disconnectFlag;
+        public bool disconnectFlagSmooth;
         public bool DisconnectFlag { get { return disconnectFlag; } 
             set 
             {
@@ -28,7 +29,7 @@ namespace Shared.Network
         }
 
         private byte[] intBuffer = new byte[Serializer.SizeIdentifier];
-
+        private byte[] headerBuffer = new byte[Serializer.SizeForHeaderIdentifier];
         public ListenerBase(TcpClient connection)
         {
             this.connection = connection;
@@ -43,6 +44,7 @@ namespace Shared.Network
 
         public void EnqueuePackets(List<byte[]> packets)
         {
+            if (disconnectFlagSmooth) return;
             if (disconnectFlag) return;
             foreach (byte[] packet in packets)
             {
@@ -61,6 +63,8 @@ namespace Shared.Network
                         if (disconnectFlag) break;
                         networkStream.Write(packet, 0, packet.Length);
                     }
+                    if (disconnectFlagSmooth && dataQueue.Count == 0)
+                        disconnectFlag = true;
                 }
             }
 
@@ -83,19 +87,18 @@ namespace Shared.Network
                         Thread.Sleep(1);
                         continue;
                     }
-                    networkStream.Read(intBuffer, 0, Serializer.SizeIdentifier); // We get the size of a packet
+                    ReadExact(intBuffer, Serializer.SizeIdentifier); //We get the size of the packet in bytes
                     int packetBuffer = BitConverter.ToInt32(intBuffer, 0); //We get it in human readable numbers
                     Array.Clear(intBuffer, 0, intBuffer.Length);
 
-                    byte[] headerBytes = new byte[Serializer.SizeForHeaderIdentifier];
-                    networkStream.Read(headerBytes, 0, 1);
-                    PacketType type = (PacketType)headerBytes[0];
+                    ReadExact(headerBuffer, Serializer.SizeForHeaderIdentifier); //We get the header in bytes;
+                    PacketType type = (PacketType)headerBuffer[0]; //We get it in human readable enums
+                    Array.Clear(headerBuffer, 0, headerBuffer.Length);
 
                     byte[] packet = new byte[packetBuffer];
-                    ReadFullPacket(packet, packetBuffer); // We get the entire object
+                    ReadExact(packet, packetBuffer); // We get the entire object
 
                     HandlePacket(packet, type); //We do stuff with the objet bytes, crazy I know
-
                 }
             }
 
@@ -107,7 +110,7 @@ namespace Shared.Network
             }
         }
 
-        public void ReadFullPacket(byte[] content, int buffer)
+        public void ReadExact(byte[] content, int buffer)
         {
             int bytesRead = 0;
             try
@@ -121,7 +124,7 @@ namespace Shared.Network
             }
             catch (Exception e)
             {
-                HandleError(e, nameof(ReadFullPacket));
+                HandleError(e, nameof(ReadExact));
                 disconnectFlag = true;
             }
         }

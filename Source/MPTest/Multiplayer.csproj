@@ -122,6 +122,7 @@
     <Compile Include="Mono\GameObjects\Mouse.cs" />
     <Compile Include="Mono\UI\MPLoginPanel.cs" />
     <Compile Include="Patches\CmdLoadGamePatch.cs" />
+    <Compile Include="Patches\CmdSaveGamePatch.cs" />
     <Compile Include="Patches\GameStatePatch.cs" />
     <Compile Include="Patches\MainMenuStartPatch.cs" />
     <Compile Include="Managers\MiscManager.cs" />

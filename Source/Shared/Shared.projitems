@@ -11,6 +11,7 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Misc\Attributes.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)misc\Enums.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)misc\FixedList.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Network\ListenerBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Network\PacketUtilities.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Packetdata\ClockSpeed.cs" />

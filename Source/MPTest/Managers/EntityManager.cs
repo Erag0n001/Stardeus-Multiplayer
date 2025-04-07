@@ -82,7 +82,7 @@ namespace Multiplayer.Managers
             NetworkedEntityWithComp entityN = Serializer.PacketToObject<NetworkedEntityWithComp>(packet);
             Entity entity = A.S.FindEntity<Entity>((int)entityN.id);
             Printer.Warn($"Removing entity {entity}");
-            GameStatePatch.RemoveEntityPatch.IsServer = true;
+            //GameStatePatch.RemoveEntityPatch.IsServer = true;
             if (entity is Tile)
                 EntityManager.RemoveTile(entity as Tile);
             if (entity is Obj)

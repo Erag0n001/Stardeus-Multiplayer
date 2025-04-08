@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Sockets;
 using System.Reflection;
@@ -18,6 +19,7 @@ namespace Shared.Network
         public NetworkStream networkStream;
 
         private readonly BlockingCollection<byte[]> dataQueue = new BlockingCollection<byte[]>();
+        private readonly object enqueueLock = new object();
         private bool disconnectFlag;
         public bool disconnectFlagSmooth;
         public bool DisconnectFlag { get { return disconnectFlag; } 
@@ -46,9 +48,12 @@ namespace Shared.Network
         {
             if (disconnectFlagSmooth) return;
             if (disconnectFlag) return;
-            foreach (byte[] packet in packets)
+            lock (enqueueLock)
             {
-                dataQueue.Add(packet);
+                foreach (byte[] packet in packets)
+                {
+                    dataQueue.Add(packet);
+                }
             }
         }
 
@@ -89,6 +94,7 @@ namespace Shared.Network
                     }
                     ReadExact(intBuffer, Serializer.SizeIdentifier); //We get the size of the packet in bytes
                     int packetBuffer = BitConverter.ToInt32(intBuffer, 0); //We get it in human readable numbers
+                    
                     Array.Clear(intBuffer, 0, intBuffer.Length);
 
                     ReadExact(headerBuffer, Serializer.SizeForHeaderIdentifier); //We get the header in bytes;
@@ -101,7 +107,7 @@ namespace Shared.Network
                     HandlePacket(packet, type); //We do stuff with the objet bytes, crazy I know
                 }
             }
-
+            
             catch (Exception e)
             {
                 HandleError(e, nameof(Listen));

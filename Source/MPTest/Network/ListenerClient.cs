@@ -21,6 +21,7 @@ namespace Multiplayer.Network
         public override void HandlePacket(byte[] packetByte, PacketType packetType)
         {
             base.HandlePacket(packetByte, packetType);
+            Printer.Warn(packetByte.Length);
             try
             {
                 MainThread.Instance.Enqueue(() =>

@@ -69,7 +69,11 @@ namespace Multiplayer.Managers
                 {
                     Thread.Sleep((int)sleepTime);
                     try { BroadcastMousePosition(); }
-                    catch(Exception e) { Printer.Error(e); }
+                    catch(Exception e) 
+                    { 
+                        Printer.Error($"Error while handling player mouse. Deleting...\n{e}"); 
+                        return; 
+                    }
                 }
             });
         }

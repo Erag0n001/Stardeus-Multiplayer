@@ -31,6 +31,8 @@ namespace Multiplayer.Patches
             {
                 if (!Main.isConnected)
                     return true;
+                Printer.Warn("", Verbose.StackTrace);
+                __result = false;
                 if (IsFromServer)
                     return true;
                 if (Main.isHost)
@@ -51,7 +53,7 @@ namespace Multiplayer.Patches
                 }
                 if (!Main.isHost)
                     return;
-                Set_State.Invoke(goal, new object[] { AIGoalState.Available });
+                Set_State.Invoke(goal, new object[] { AIGoalState.PreAssigned });
                 NetworkedAIGoal goalN = new NetworkedAIGoal();
                 AIGoalData.TrySerialize(goal, out AIGoalData data);
                 goalN.goal = MessagePackSerializer.Serialize(data);

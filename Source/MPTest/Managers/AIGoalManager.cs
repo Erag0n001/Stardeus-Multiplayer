@@ -47,12 +47,13 @@ namespace Multiplayer.Managers
 
             NetworkedAIGoal goalN = Serializer.PacketToObject<NetworkedAIGoal>(packet);
             AIGoalData goalData = MessagePackSerializer.Deserialize<AIGoalData>(goalN.goal);
+            AIPlanData planData = MessagePackSerializer.Deserialize<AIPlanData>(goalN.plan);
             Printer.Warn($"Job packet arrived with {goalData.Id} job id, {goalData.TargetId} target id, {goalData.AgentId} agent id");
             AIGoal goal = AIGoalData.Deserialize(A.S, goalData, false);
-            //TryForceGoalMethod.Invoke(A.S.Sys.AI, new object[] { goal, false });
-            goal.Target.OnGoalLoad(goal);
-            //BeingUtils.TryAssignGoal(A.S.Ticks, goal, goal.Agent, true);
-            //goal.Agent.SetGoal(goal, plan, A.S.Ticks, true);
+            AIPlan plan = AIPlanData.Deserialize(planData);
+            Printer.Warn($"Goal was: {goal}\nPlan was:{plan}");
+            AiAgentCompPatch.IsFromServer = true;
+            goal.Agent.SetGoal(goal, plan, A.S.Ticks, true);
         }
         //[PacketHandler(PacketType.BroadCastNewAIGoal)]
         //public static void HandleNewEntityGoalFromPacket(byte[] packet)

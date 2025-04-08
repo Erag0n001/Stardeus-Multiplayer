@@ -31,7 +31,6 @@ namespace Multiplayer.Patches
             {
                 if (!Main.isConnected)
                     return true;
-                Printer.Warn("", Verbose.StackTrace);
                 __result = false;
                 if (IsFromServer)
                     return true;
@@ -40,7 +39,7 @@ namespace Multiplayer.Patches
                 return false;
             }
             [HarmonyPostfix]
-            public static void Postfix(bool __result, AIGoal goal)
+            public static void Postfix(bool __result, AIGoal goal, AIPlan plan)
             {
                 if (!Main.isConnected)
                     return;
@@ -57,8 +56,10 @@ namespace Multiplayer.Patches
                 NetworkedAIGoal goalN = new NetworkedAIGoal();
                 AIGoalData.TrySerialize(goal, out AIGoalData data);
                 goalN.goal = MessagePackSerializer.Serialize(data);
+                goalN.plan = MessagePackSerializer.Serialize(AIPlanData.Serialize(plan));
                 Printer.Warn($"Agent was {goal.Agent?.ToString() ?? "null"}");
                 Printer.Warn($"Goal was {goal}");
+                Printer.Warn($"Plan was {plan}");
                 Printer.Error($"Job packet left with {data.Id} job id, {data.TargetId} target id, {data.AgentId} agent id");
                 ListenerClient.Instance.EnqueueObject(PacketType.BroadCastNewAIGoal, goalN);
                 AIGoal t = AIGoalData.Deserialize(A.S, data, false);

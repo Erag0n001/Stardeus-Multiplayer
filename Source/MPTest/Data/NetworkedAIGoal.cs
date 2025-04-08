@@ -12,5 +12,6 @@ namespace Multiplayer.Data
     {
         [Key(0)] public int? entityID;
         [Key(1)] public byte[] goal;
+        [Key(2)] public byte[] plan;
     }
 }

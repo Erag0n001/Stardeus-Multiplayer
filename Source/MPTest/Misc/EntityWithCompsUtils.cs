@@ -29,8 +29,6 @@ namespace Multiplayer.Misc
         {
             //GameStatePatch.AddEntityPatch.IsServer = true;
 
-            Printer.Warn(entityN.data);
-            Printer.Warn(entityN.type);
             Entity entity = (Entity)MessagePackSerializer.Deserialize(entityN.type, entityN.data, CmdSaveGame.MsgPackOptions);
             Def def = The.Defs.Get(entity.DefinitionId);
             Vector2 pos = new Vector2((float)entityN.x, (float)entityN.y);

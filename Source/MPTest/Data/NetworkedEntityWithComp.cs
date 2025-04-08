@@ -24,7 +24,6 @@ namespace Multiplayer.Data
         [IgnoreMember] public Type type { 
             get 
             {
-                Printer.Warn(typestring);
                 if(typestring != null)
                     return Type.GetType(typestring);
                 else 

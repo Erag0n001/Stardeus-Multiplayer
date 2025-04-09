@@ -29,8 +29,8 @@ namespace Multiplayer.Patches
             CreateButton = AccessTools.Method(typeof(MainMenu), "CreateButton");
             ShowMainMenu = AccessTools.Method(typeof(MainMenu), "ShowMainMenu");
         }
-        [HarmonyPatch(typeof(MainMenu), "Update")]
-        public static class StartPatch 
+        [HarmonyPatch(typeof(MainMenu), "ShowMainMenu")]
+        public static class ShowMainMenuPatch 
         {
             [HarmonyPostfix]
             public static void Postfix(MainMenu __instance)
@@ -41,8 +41,8 @@ namespace Multiplayer.Patches
                 if (buttons == null)
                     return;
                 buttons.Insert(3, CreateMPButton(__instance));
-                ShowMainMenu.Invoke(__instance, null);   
                 wasPatched = true;
+                ShowMainMenu.Invoke(__instance, null);   
             }
 
             private static MainMenuButton CreateMPButton(MainMenu __instance)

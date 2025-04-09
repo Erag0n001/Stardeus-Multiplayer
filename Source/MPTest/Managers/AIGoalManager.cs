@@ -16,6 +16,7 @@ using Multiplayer.Misc;
 using Multiplayer.Patches;
 using Shared.Enums;
 using Shared.Misc;
+using Shared.PacketData;
 
 namespace Multiplayer.Managers
 {
@@ -32,23 +33,12 @@ namespace Multiplayer.Managers
     }
     public static class AIGoalHandler 
     {
-        static MethodInfo TryForceGoalMethod;
-        static FieldInfo colonyGoal;
-        static MethodInfo AddToConstructionGoals;
-        static AIGoalHandler() 
-        {
-            TryForceGoalMethod = AccessTools.Method(typeof(AISys), "TryForceGoal");
-            AddToConstructionGoals = AccessTools.Method(typeof(AISys), "AddToConstructionGoals");
-            colonyGoal = AccessTools.Field(typeof(AISys), "colonyGoals");
-        }
         [PacketHandler(PacketType.BroadCastNewAIGoal)]
         public static void HandleNewJobFromPacket(byte[] packet)
         {
-
             NetworkedAIGoal goalN = Serializer.PacketToObject<NetworkedAIGoal>(packet);
             AIGoalData goalData = MessagePackSerializer.Deserialize<AIGoalData>(goalN.goal);
             AIPlanData planData = MessagePackSerializer.Deserialize<AIPlanData>(goalN.plan);
-            Printer.Warn($"Job packet arrived with {goalData.Id} job id, {goalData.TargetId} target id, {goalData.AgentId} agent id");
             AIGoal goal = AIGoalData.Deserialize(A.S, goalData, false);
             AIPlan plan = AIPlanData.Deserialize(planData);
             Printer.Warn($"Goal was: {goal}\nPlan was:{plan}");

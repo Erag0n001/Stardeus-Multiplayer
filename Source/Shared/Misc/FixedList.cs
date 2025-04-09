@@ -27,6 +27,10 @@ namespace Shared.Misc
             return content.Remove(item);
         }
 
+        public T At(int index) => content.ElementAt(index);
+
+        public void RemoveAt(int index) => content.RemoveAt(index);
+
         private void CheckCount() 
         {
             if (content.Count > maximumSize)

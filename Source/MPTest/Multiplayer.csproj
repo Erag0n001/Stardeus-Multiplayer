@@ -107,7 +107,6 @@
   <ItemGroup>
     <Compile Include="Config\ConfigDataMultiplayer.cs" />
     <Compile Include="Config\ModConfigsMultiplayer.cs" />
-    <Compile Include="Data\NetworkedAIGoal.cs" />
     <Compile Include="Data\NetworkedColor.cs" />
     <Compile Include="Data\NetworkedCompConfig.cs" />
     <Compile Include="Data\NetworkedEntityWithComp.cs" />
@@ -121,6 +120,7 @@
     <Compile Include="Misc\MainThread.cs" />
     <Compile Include="Mono\GameObjects\Mouse.cs" />
     <Compile Include="Mono\UI\MPLoginPanel.cs" />
+    <Compile Include="Patches\AIGoalPatch.cs" />
     <Compile Include="Patches\CmdLoadGamePatch.cs" />
     <Compile Include="Patches\CmdSaveGamePatch.cs" />
     <Compile Include="Patches\GameStatePatch.cs" />

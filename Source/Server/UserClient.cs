@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MessagePack;
 using Server.Core;
+using Server.Managers;
 using Server.Misc;
 using Server.Network;
 using Shared.PacketData;
@@ -31,7 +32,7 @@ namespace Server
             }
 
             username = data.username;
-            if(MainProgram.Users.Count == 1) 
+            if(UserManager.ConnectedClients.Count == 1) 
             {
                 permission.isHost = true;
                 Printer.Log($"{username} is now host of the game.");

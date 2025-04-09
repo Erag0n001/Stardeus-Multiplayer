@@ -17,8 +17,8 @@ namespace Multiplayer.Patches
 {
     public static class MainMenuStartPatch
     {
+        //TODO Fix this patch. Looks at ModCOnfig for info on how to.
         public static FieldInfo currentButtons;
-        private static FieldInfo text;
         private static MethodInfo CreateButton;
         private static MethodInfo ShowMainMenu;
         private static bool wasPatched;
@@ -26,7 +26,6 @@ namespace Multiplayer.Patches
         static MainMenuStartPatch() 
         {
             currentButtons = AccessTools.Field(typeof(MainMenu), "currentButtons");
-            text = AccessTools.Field(typeof(MainMenuButton), "text");
             CreateButton = AccessTools.Method(typeof(MainMenu), "CreateButton");
             ShowMainMenu = AccessTools.Method(typeof(MainMenu), "ShowMainMenu");
         }

@@ -12,6 +12,7 @@ using Multiplayer.Data;
 using Multiplayer.Misc;
 using Multiplayer.Network;
 using Shared.Enums;
+using Shared.PacketData;
 
 namespace Multiplayer.Patches
 {
@@ -53,14 +54,13 @@ namespace Multiplayer.Patches
                 if (!Main.isHost)
                     return;
                 Set_State.Invoke(goal, new object[] { AIGoalState.PreAssigned });
-                NetworkedAIGoal goalN = new NetworkedAIGoal();
                 AIGoalData.TrySerialize(goal, out AIGoalData data);
-                goalN.goal = MessagePackSerializer.Serialize(data);
-                goalN.plan = MessagePackSerializer.Serialize(AIPlanData.Serialize(plan));
-                Printer.Warn($"Agent was {goal.Agent?.ToString() ?? "null"}");
+                byte[] goalRaw = MessagePackSerializer.Serialize(data);
+                byte[] planRaw = MessagePackSerializer.Serialize(AIPlanData.Serialize(plan));
+                Printer.Warn($"Agent was {goal.Agent}");
                 Printer.Warn($"Goal was {goal}");
                 Printer.Warn($"Plan was {plan}");
-                Printer.Error($"Job packet left with {data.Id} job id, {data.TargetId} target id, {data.AgentId} agent id");
+                NetworkedAIGoal goalN = new NetworkedAIGoal(goal.Id, goal.Agent.EntityId, goalRaw, planRaw);
                 ListenerClient.Instance.EnqueueObject(PacketType.BroadCastNewAIGoal, goalN);
                 AIGoal t = AIGoalData.Deserialize(A.S, data, false);
                 Set_State.Invoke(goal, new object[] { AIGoalState.InProgress });

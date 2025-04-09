@@ -13,38 +13,25 @@ namespace Server.Managers
 {
     public static class BroadcastManager
     {
-        public static void BroadcastToAllClient(UserClient client, byte[] data, PacketType header, bool excludeSelf = true)
+        public static void BroadcastToAllClient(UserClient client, byte[] data, PacketType header, bool excludeSelf = true, bool exludeHost = true)
         {
-            foreach (UserClient cl in MainProgram.Users)
+            foreach (UserClient cl in UserManager.ConnectedClients)
             {
-                if (client != null && cl == client) continue;
+                if ((excludeSelf && cl == client) || exludeHost && cl == MainProgram.host) continue;
                 cl.listener.EnqueuePackets(Serializer.MakePacketsFromBytes(data, header, false));
             }
         }
-        public static void BroadcastToAllClient(UserClient client, List<byte[]> packets, bool excludeSelf = true)
+        public static void BroadcastToAllClient(UserClient client, List<byte[]> packets, bool excludeSelf = true, bool exludeHost = true)
         {
-            foreach (UserClient cl in MainProgram.Users)
+            foreach (UserClient cl in UserManager.ConnectedClients)
             {
-                if (excludeSelf && cl == client) continue;
+                if ((excludeSelf && cl == client) || exludeHost && cl == MainProgram.host) continue;
                 cl.listener.EnqueuePackets(packets);
             }
         }
     }
     public static class BroadcastHandler 
     {
-
-
-        [PacketHandler(PacketType.BroadCastNewAIGoal)]
-        public static void BroadCastNewAIGoal(UserClient client, byte[] packet)
-        {
-            BroadcastManager.BroadcastToAllClient(client, packet, PacketType.BroadCastNewAIGoal);
-        }
-        [PacketHandler(PacketType.BroadCastNewEntityGoal)]
-        public static void BroadCastNewEntityGoal(UserClient client, byte[] packet)
-        {
-            BroadcastManager.BroadcastToAllClient(client, packet, PacketType.BroadCastNewEntityGoal);
-        }
-
         // Entity related
         [PacketHandler(PacketType.BroadCastNewObj)]
         public static void BroadCastObject(UserClient client, byte[] packet)

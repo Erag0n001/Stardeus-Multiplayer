@@ -14,6 +14,7 @@ namespace Server.Managers
 {
     public static class UserManager 
     {
+        public static List<UserClient> ConnectedClients = new List<UserClient>();
         public static void SendClientPermissions(UserClient client) 
         {
             client.listener.EnqueueObject(PacketType.UserPermissions, client.permission);

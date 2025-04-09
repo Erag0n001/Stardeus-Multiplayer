@@ -13,7 +13,6 @@ namespace Server.Core
     public static class MainProgram
     {
         public static Dictionary<PacketType, MethodInfo> Managers = new Dictionary<PacketType, MethodInfo>();
-        public static List<UserClient> Users = new List<UserClient>();
         public static UserClient host;
         static void Main(string[] args)
         {

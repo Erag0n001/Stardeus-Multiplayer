@@ -3,6 +3,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Text.Unicode;
 using Server.Core;
+using Server.Managers;
 using Server.Misc;
 using Shared.Enums;
 using Shared.Misc;
@@ -22,7 +23,7 @@ namespace Server.Network
             UserClient = new UserClient();
             UserClient.client = this.connection;
             UserClient.listener = this;
-            MainProgram.Users.Add(UserClient);
+            UserManager.ConnectedClients.Add(UserClient);
         }
 
         public override void HandlePacket(byte[] packetByte, PacketType packetType)

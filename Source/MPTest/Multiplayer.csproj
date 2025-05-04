@@ -123,6 +123,7 @@
     <Compile Include="Patches\AIGoalPatch.cs" />
     <Compile Include="Patches\CmdLoadGamePatch.cs" />
     <Compile Include="Patches\CmdSaveGamePatch.cs" />
+    <Compile Include="Patches\UnityLoggerPatch.cs" />
     <Compile Include="Patches\GameStatePatch.cs" />
     <Compile Include="Patches\MainMenuStartPatch.cs" />
     <Compile Include="Managers\MiscManager.cs" />
@@ -134,8 +135,6 @@
     <Compile Include="Patches\AiAgentCompPatch.cs" />
     <Compile Include="Patches\AiSysPatch.cs" />
     <Compile Include="Patches\ClockPatch.cs" />
-    <Compile Include="Patches\EntityPatch.cs" />
-    <Compile Include="Patches\ObjsPatch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

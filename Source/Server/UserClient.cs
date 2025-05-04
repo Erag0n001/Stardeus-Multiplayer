@@ -40,5 +40,10 @@ namespace Server
             }
             hasBeenAssigned = true;
         }
+
+        public override string ToString()
+        {
+            return username;
+        }
     }
 }

@@ -41,18 +41,12 @@ namespace Multiplayer.Managers
             AIPlanData planData = MessagePackSerializer.Deserialize<AIPlanData>(goalN.plan);
             AIGoal goal = AIGoalData.Deserialize(A.S, goalData, false);
             AIPlan plan = AIPlanData.Deserialize(planData);
-            Printer.Warn($"Goal was: {goal}\nPlan was:{plan}");
+            Printer.Warn($"Agent was {goal.Agent}");
+            Printer.Warn($"Goal was {goal}");
+            Printer.Warn($"Plan was {plan}");
+            Printer.Warn($"Target was {goal.Target} with id {goal.Target.EntityId}");
             AiAgentCompPatch.IsFromServer = true;
             goal.Agent.SetGoal(goal, plan, A.S.Ticks, true);
         }
-        //[PacketHandler(PacketType.BroadCastNewAIGoal)]
-        //public static void HandleNewEntityGoalFromPacket(byte[] packet)
-        //{
-        //    AiAgentCompPatch.IsFromServer = true;
-        //    NetworkedAIGoal goalN = Serializer.PacketToObject<NetworkedAIGoal>(packet);
-        //    AIGoalData goalData = MessagePackSerializer.Deserialize<AIGoalData>(goalN.goal);
-        //    AIGoal goal = AIGoalData.Deserialize(A.S, goalData, false);
-        //    Printer.Warn(goal);
-        //}
     }
 }

@@ -30,6 +30,7 @@ namespace Server.Managers
                     Serializer.CreatePacketsFromObject(goal, PacketType.BroadCastNewAIGoal), false, true);
             }
             goals[goal.goalID] = pending;
+            Printer.Warn($"{client} added job with id {goal.goalID} on {goal.agentID}");
         }
 
         public static void ValidateGoal(UserClient client, ValidateOrderData data) 
@@ -38,14 +39,18 @@ namespace Server.Managers
             {
                 if(goals.TryGetValue(data.goalID, out var goal))
                 {
+                    if (goal.acknowlegedClients.Contains(client))
+                        return;
                     goal.acknowlegedClients.Add(client);
+                    Printer.Warn($"{client} acknowledged task with {data.goalID} on {data.agentID}");
                     if (goal.acknowlegedClients.Count == UserManager.ConnectedClients.Count)
                     {
                         goals.Remove(data.goalID);
 
                         if (goals.Count() > 0) 
                         {
-                            var nextAIGoaL = goals.Values.First();
+                            var nextAIGoaL = goals.Values.First().goal;
+                            Printer.Warn($"Broadcasting new job {nextAIGoaL.goalID} on {nextAIGoaL.agentID}");
                             List<byte[]> serializedGoal = Serializer.CreatePacketsFromObject(nextAIGoaL, PacketType.BroadCastNewAIGoal);
                             BroadcastManager.BroadcastToAllClient(client, serializedGoal, false, true);
                         }

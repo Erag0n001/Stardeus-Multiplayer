@@ -21,7 +21,7 @@ namespace Multiplayer.Patches
         public static FieldInfo currentButtons;
         private static MethodInfo CreateButton;
         private static MethodInfo ShowMainMenu;
-        private static bool wasPatched;
+        public static bool WasPatched;
         
         static MainMenuStartPatch() 
         {
@@ -35,13 +35,13 @@ namespace Multiplayer.Patches
             [HarmonyPostfix]
             public static void Postfix(MainMenu __instance)
             {
-                if (wasPatched)
+                if (WasPatched)
                     return;
                 List<MainMenuButton> buttons = (List<MainMenuButton>)currentButtons.GetValue(__instance);
                 if (buttons == null)
                     return;
                 buttons.Insert(3, CreateMPButton(__instance));
-                wasPatched = true;
+                WasPatched = true;
                 ShowMainMenu.Invoke(__instance, null);   
             }
 

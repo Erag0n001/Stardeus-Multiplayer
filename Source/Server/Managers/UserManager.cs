@@ -30,5 +30,12 @@ namespace Server.Managers
             Printer.Log($"New user registered {client.username}");
             UserManager.SendClientPermissions(client);
         }
+        [PacketHandler(PacketType.DisconnectSafe)]
+        public static void DisconnectUser(UserClient client, byte[] packet) 
+        {
+            client.listener.EnqueueObject(PacketType.DisconnectSafe, new object());
+            Thread.Sleep(250);
+            client.listener.DisconnectFlag = true;
+        }
     }
 }

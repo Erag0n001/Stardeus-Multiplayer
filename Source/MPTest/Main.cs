@@ -16,6 +16,9 @@ using Game.Misc;
 using Shared.Enums;
 using Multiplayer.Config;
 using ModConfig;
+using ModConfig.Patches;
+using UnityEngine.SceneManagement;
+using Multiplayer.Patches;
 
 namespace Multiplayer
 {
@@ -32,6 +35,7 @@ namespace Multiplayer
             Configs = (ConfigDataMultiplayer)ConfigData.LoadConfig("Eragon.Multiplayer");
             Printer.Warn("Multiplayer Loaded!");
             LoadHarmony();
+            SetupListeners();
             CreateUnityDispatcher();
             Task.Run(() =>
             {
@@ -75,6 +79,17 @@ namespace Multiplayer
         {
             GameObject go = new GameObject("Dispatcher");
             go.AddComponent(typeof(MainThread));
+        }
+
+        static void SetupListeners()
+        {
+            SceneManager.activeSceneChanged += ListenForSceneChange;
+        }
+
+        static void ListenForSceneChange(Scene before, Scene after)
+        {
+            if (after.name == "MainMenu")
+                MainMenuStartPatch.WasPatched = false;
         }
     }
 }

@@ -30,7 +30,6 @@ namespace Multiplayer.Patches
             [HarmonyPrefix]
             public static bool Prefix(ref bool __result, AIGoal goal)
             {
-                Printer.Warn($"Trying to add goal with target{goal.Target.EntityId}");
                 if (!Main.isConnected)
                     return true;
                 __result = false;
@@ -59,7 +58,7 @@ namespace Multiplayer.Patches
                 byte[] goalRaw = MessagePackSerializer.Serialize(data);
                 byte[] planRaw = MessagePackSerializer.Serialize(AIPlanData.Serialize(plan));
                 Printer.Warn($"Agent was {goal.Agent}");
-                Printer.Warn($"Goal was {goal}");
+                Printer.Warn($"Goal was {goal} with id {goal.Id}");
                 Printer.Warn($"Plan was {plan}");
                 Printer.Warn($"Target was {goal.Target} with id {goal.Target.EntityId}");
                 NetworkedAIGoal goalN = new NetworkedAIGoal(goal.Id, goal.Agent.EntityId, goalRaw, planRaw);

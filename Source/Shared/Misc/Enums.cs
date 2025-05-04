@@ -15,6 +15,7 @@ namespace Shared.Enums
         RequestSaveFile,
         UserPermissions,
         BroadCastNewAIGoal,
-        ValidateGoal
+        ValidateGoal,
+        DisconnectSafe
     }
 }

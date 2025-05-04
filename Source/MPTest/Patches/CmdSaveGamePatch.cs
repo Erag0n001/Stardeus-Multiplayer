@@ -10,6 +10,7 @@ using Game.Commands;
 using Game.Data;
 using HarmonyLib;
 using Mono.Cecil.Cil;
+using Multiplayer.Misc;
 using Multiplayer.Network;
 using Shared.Enums;
 using Shared.PacketData;
@@ -65,14 +66,17 @@ namespace Multiplayer.Patches
                 bool isExiting = (bool)AccessTools.Field(typeof(CmdSaveGame), "willExit").GetValue(__instance);
                 if (Main.isConnected)
                 {
+                    Printer.Warn($"Sending save to server");
                     SaveFile save = new SaveFile();
                     save.name = The.Platform.PlayerName ?? "Test";
                     save.data = data;
                     save.meta = meta;
                     ListenerClient.Instance.EnqueueObject(PacketType.SaveFileSend, save);
                     if (isExiting)
+                    {
+                        ListenerClient.Instance.EnqueueObject(PacketType.DisconnectSafe, new object());
                         ListenerClient.Instance.disconnectFlagSmooth = true;
-
+                    }
                 }
             }
         }

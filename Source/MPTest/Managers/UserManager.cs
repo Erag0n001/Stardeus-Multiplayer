@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Game;
 using Multiplayer.Misc;
+using Multiplayer.Network;
 using Shared.Enums;
 using Shared.Misc;
 using Shared.PacketData;
@@ -27,6 +28,11 @@ namespace Multiplayer.Managers
             {
                 Printer.Warn($"Awaiting save file...");
             }
+        }
+        [PacketHandler(PacketType.DisconnectSafe)]
+        public static void DisconnectFromServer(byte[] packet)
+        {
+            ListenerClient.Instance.DisconnectFlag = true;
         }
     }
 }

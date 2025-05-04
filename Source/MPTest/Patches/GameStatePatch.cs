@@ -36,7 +36,6 @@ namespace Multiplayer.Patches
             public static bool Prefix(GameState __instance, Entity entity)
             {
                 Printer.Warn($"Deleting object with id {entity.Id}");
-                Printer.Warn($"Stacktrace : {new StackTrace()}");
                 return true;
             }
         }

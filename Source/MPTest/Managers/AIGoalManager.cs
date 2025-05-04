@@ -42,11 +42,12 @@ namespace Multiplayer.Managers
             AIGoal goal = AIGoalData.Deserialize(A.S, goalData, false);
             AIPlan plan = AIPlanData.Deserialize(planData);
             Printer.Warn($"Agent was {goal.Agent}");
-            Printer.Warn($"Goal was {goal}");
+            Printer.Warn($"Goal was {goal} with id {goal.Id}");
             Printer.Warn($"Plan was {plan}");
             Printer.Warn($"Target was {goal.Target} with id {goal.Target.EntityId}");
             AiAgentCompPatch.IsFromServer = true;
-            goal.Agent.SetGoal(goal, plan, A.S.Ticks, true);
+            Printer.Warn(goal.Agent.Goal);
+            //goal.Agent.SetGoal(goal, plan, A.S.Ticks, true); Apparently this isn't needed? I am confused as well
         }
     }
 }
